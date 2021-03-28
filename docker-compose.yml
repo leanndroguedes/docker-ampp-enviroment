@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    ports:
+      - 5000:80
+    volumes:
+      - ./www:/var/www/html
+    links:
+      - db
+
+  db:
+    image: mariadb:latest
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    volumes:
+      - ./docker-compose:/docker-entrypoint-initdb.d
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    restart: always
+    ports:
+      - 8080:80
